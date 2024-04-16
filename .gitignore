@@ -1,0 +1,16 @@
+.cache/
+*cache*
+.org-id-locations
+*auto-save-list/
+bookmarks
+*elpa/
+*emacs-backup/
+*eshell/
+org-roam.db
+*projectile-bookmarks.eld
+straight/
+transient/
+var/
+projects
+history
+smex-items
