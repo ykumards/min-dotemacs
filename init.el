@@ -256,14 +256,15 @@ If the new path's directories does not exist, create them."
 ;; Load keybindings
 (load-file (expand-file-name "extras/keybindings.el" user-emacs-directory))
 
+(defconst my-emacs-home "~/.config/emacs/")
 ;; More customizations
-(load-file "~/.emacs.d/extras/smex.el")
-(load-file "~/.emacs.d/nano/nano-base-colors.el")
-(load-file "~/.emacs.d/nano/nano-faces.el")
-(load-file "~/.emacs.d/nano/nano-splash.el")
-(load-file "~/.emacs.d/nano/nano-counsel.el")
-(load-file "~/.emacs.d/nano/nano-layout.el")
-(load-file "~/.emacs.d/nano/nano-defaults.el")
+(load-file (concat my-emacs-home "extras/smex.el"))
+(load-file (concat my-emacs-home "nano/nano-base-colors.el"))
+(load-file (concat my-emacs-home "nano/nano-faces.el"))
+(load-file (concat my-emacs-home "nano/nano-splash.el"))
+(load-file (concat my-emacs-home "nano/nano-counsel.el"))
+(load-file (concat my-emacs-home "nano/nano-layout.el"))
+(load-file (concat my-emacs-home "nano/nano-defaults.el"))
 (load-file (expand-file-name "extras/customize.el" user-emacs-directory))
 
 (setq mac-option-modifier 'meta)   ;; Make Option the Meta key
