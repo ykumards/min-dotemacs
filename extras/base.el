@@ -212,6 +212,14 @@
 (dolist (package package-list)
   (straight-use-package package))
 
+;; Ensure treemacs-projectile is installed
+(use-package treemacs-projectile
+  :after (treemacs projectile)
+  :ensure t)
+
+;; Automatically make treemacs follow the current projectile project
+(treemacs-project-follow-mode 1)
+
 (use-package doom-modeline
   :ensure t
   :init (doom-modeline-mode 1))
@@ -236,3 +244,7 @@
       (dired-sidebar-refresh-sidebar))))
 
 (add-hook 'projectile-after-switch-project-hook 'my/update-dired-sidebar)
+
+(use-package ace-window
+  :ensure t
+  :bind (("M-o" . ace-window)))  ;; Bind ace-window to `M-o`

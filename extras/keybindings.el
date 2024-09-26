@@ -137,6 +137,13 @@
     "ls" '(org-journal-search :which-key "Next entry")
     "lp" '(org-journal-previous-entry :which-key "Next entry")
     "lo" '(org-journal-open-current-journal-file :which-key "Open current entry")
+
+    "w"  '(:ignore t :which-key "windows")
+    "wl" '(windmove-right :which-key "Move right")
+    "wh" '(windmove-left :which-key "Move left")
+    "wk" '(windmove-up :which-key "Move up")
+    "wj" '(windmove-down :which-key "Move down")
+    "wo" '(ace-window :which-key "Ace window")
 )
 
 ;; Define alternative leader keys in eshell and deft
