@@ -1,3 +1,6 @@
+;; Global keybinding for Neotree toggle
+(global-set-key [f8] 'treemacs)
+
 (global-set-key "\C-x\C-m" 'execute-extended-command)
 (global-set-key (kbd "C-c C-n") 'dired-sidebar-toggle-sidebar)
 (global-set-key (kbd "C-x RET") 'execute-extended-command)
@@ -41,6 +44,8 @@
   :keymaps '(eshell-mode-map deft-mode-map vterm-mode-map)
   :prefix "C-SPC")
 
+
+
 (my-leader-keys
    "SPC"  '(execute-extended-command :which-key "M-x")
     ">"    '(next-buffer :which-key "Next buffer")
@@ -81,6 +86,7 @@
 
     ;; ====== Project ======
     "p"   '(:ignore t :which-key "project")
+    "pt"  '(treemacs :which-key "Toggle Treemacs")
     "pp"  #'project-switch-project
     "pc"  #'project-compile
     "pd"  #'project-find-dir
@@ -117,13 +123,20 @@
     "t" '(:ignore t :which-key "toggle")
     "tz" '(dired-sidebar-toggle-sidebar :which-key "Toggle Dired Sidebar")
 
+    ;; Avy jumps
+    "j"  '(:ignore t :which-key "jump")  ;; Group for Avy-related commands
+   "jc" '(avy-goto-char :which-key "Go to char")
+   "jw" '(avy-goto-word-1 :which-key "Go to word")
+   "jl" '(avy-goto-line :which-key "Go to line")
+   "js" '(avy-goto-char-timer :which-key "Go to char sequence")
+   
     ;; journal
-    "j" '(:ignore t :which-key "journal")
-    "jc" '(calendar :which-key "Open calendar")
-    "jj" '(org-journal-new-entry :which-key "New journal entry")
-    "js" '(org-journal-search :which-key "Next entry")
-    "jp" '(org-journal-previous-entry :which-key "Next entry")
-    "jo" '(org-journal-open-current-journal-file :which-key "Open current entry")
+    "l" '(:ignore t :which-key "journal")
+    "lc" '(calendar :which-key "Open calendar")
+    "lj" '(org-journal-new-entry :which-key "New journal entry")
+    "ls" '(org-journal-search :which-key "Next entry")
+    "lp" '(org-journal-previous-entry :which-key "Next entry")
+    "lo" '(org-journal-open-current-journal-file :which-key "Open current entry")
 )
 
 ;; Define alternative leader keys in eshell and deft

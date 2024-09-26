@@ -205,6 +205,7 @@
         heaven-and-hell
         vterm
         exec-path-from-shell; Get environment variables such as $PATH from the shell
+        treemacs
         ))
 
 ;; Install packages that are not yet installed

@@ -41,3 +41,5 @@
                             (background-color . "#000000")
                             (ns-appearance . dark)
                             (ns-transparent-titlebar . t)))
+;; remove the annoying audible bell
+(setq ring-bell-function 'ignore)
