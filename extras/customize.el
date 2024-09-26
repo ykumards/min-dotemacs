@@ -1,6 +1,30 @@
 ;; Load nano things
 (require 'nano-splash)
 
+;; Set default font family and size
+(set-face-attribute 'default nil
+                    :family "JetBrainsMono Nerd Font"  ;; Replace with your preferred font
+                    :height 130          ;; Font size in 1/10 pt, 120 means 12pt
+                    :weight 'light      ;; You can also use 'bold' if you want bold
+                    :width 'normal)      ;; Normal width, can be 'condensed' or 'expanded'
+
+;; Install Doom Themes
+(use-package doom-themes
+  :straight t  ;; Or :ensure t if using package.el
+  :config
+  ;; Load the doom-Iosvkem theme
+  (load-theme 'doom-Iosvkem t)
+
+  ;; Optional: Enable bold and italic in the theme
+  (setq doom-themes-enable-bold t    ;; if nil, bold is disabled across all themes
+        doom-themes-enable-italic t) ;; if nil, italics is disabled across all themes
+
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+
+  ;; Corrects (and improves) org-mode's native fontification
+  (doom-themes-org-config))
+
 ;; Enable pixel-by-pixel smooth scrolling (Emacs 29+)
 (pixel-scroll-precision-mode)
 

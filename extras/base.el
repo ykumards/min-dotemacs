@@ -201,7 +201,6 @@
         vc-backup           ; VC backend for versioned backups
         consult-recoll      ; Consult interface for recoll query
         org-auto-tangle     ; Tangle org file when it is saved
-        doom-themes
         heaven-and-hell
         vterm
         exec-path-from-shell; Get environment variables such as $PATH from the shell
@@ -219,6 +218,26 @@
 
 ;; Automatically make treemacs follow the current projectile project
 (treemacs-project-follow-mode 1)
+
+;; Install and configure all-the-icons using straight
+(use-package all-the-icons
+  :straight t)
+
+;; Install and configure treemacs with all-the-icons integration using straight
+(use-package treemacs
+  :straight t
+  :defer t
+  :config
+  (use-package treemacs-all-the-icons
+    :straight t
+    :config
+    (treemacs-load-theme "all-the-icons"))
+  ;; Optional: Configure treemacs to follow the current projectile project
+  (use-package treemacs-projectile
+    :straight t))
+
+;; Optionally, set the size of icons in Treemacs
+(setq treemacs-icon-size 20)  ;; Adjust the size to your liking
 
 (use-package doom-modeline
   :ensure t
