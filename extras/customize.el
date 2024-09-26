@@ -25,6 +25,7 @@
   ;; Corrects (and improves) org-mode's native fontification
   (doom-themes-org-config))
 
+;;;;; SMOOTH SCROLLING ;;;;;;;;;
 ;; Enable pixel-by-pixel smooth scrolling (Emacs 29+)
 (pixel-scroll-precision-mode)
 
@@ -46,3 +47,29 @@
   :config
   (smooth-scrolling-mode 1)
   (setq smooth-scroll-margin 2))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Markdown Mode Configuration
+(use-package markdown-mode
+  :straight t
+  :mode ("\\.md\\'" . markdown-mode)
+  :init (setq markdown-command "multimarkdown")
+  :config
+  (setq markdown-fontify-code-blocks-natively t)
+  (setq markdown-enable-wiki-links t))
+
+;; Optional: Add table of contents functionality
+(use-package markdown-toc
+  :straight t
+  :hook (markdown-mode . markdown-toc-mode))
+
+;; Syntax checking for markdown
+(use-package flycheck
+  :straight t
+  :hook (markdown-mode . flycheck-mode))
+
+;; Enable orgtbl-mode for better tables
+(add-hook 'markdown-mode-hook 'orgtbl-mode)
+
+;; Enable visual-line-mode for better line wrapping
+(add-hook 'markdown-mode-hook 'visual-line-mode)
