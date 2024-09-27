@@ -68,6 +68,9 @@
 ;; If you want to turn off the welcome screen, uncomment this
 ;(setopt inhibit-splash-screen t)
 
+(setq mac-option-modifier 'meta)   ;; Make Option the Meta key
+(setq mac-command-modifier 'control) ;; Make Command key behave as Control
+
 (setopt initial-major-mode 'fundamental-mode)  ; default mode for the *scratch* buffer
 (setopt display-time-default-load-average nil) ; this information is useless for most
 
@@ -181,7 +184,7 @@ If the new path's directories does not exist, create them."
 (pixel-scroll-precision-mode)                         ; Smooth scrolling
 
 ;; Use common keystrokes by default
-(cua-mode)
+;; (cua-mode)
 
 ;; Display line numbers in programming mode
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
@@ -209,24 +212,13 @@ If the new path's directories does not exist, create them."
 (setopt display-time-format "%a %F %T")
 (setopt display-time-interval 1)
 (display-time-mode)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;
-;;;   Theme
-;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(use-package modus-themes
-  :straight t
-  :config
-  (load-theme 'modus-vivendi-tinted t))          ; for light theme, use modus-operandi
-
-(straight-use-package 'org)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;;   Optional extras
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Vim-bindings in Emacs (evil-mode configuration)
+(load-file (expand-file-name "extras/vim-like.el" user-emacs-directory))
 
 ;; Uncomment the (load-file …) lines or copy code from the extras/ elisp files
 ;; as desired
@@ -239,8 +231,6 @@ If the new path's directories does not exist, create them."
 (load-file (expand-file-name "extras/dev.el" user-emacs-directory))
 (load-file (expand-file-name "extras/vars.el" user-emacs-directory))
 
-;; Vim-bindings in Emacs (evil-mode configuration)
-(load-file (expand-file-name "extras/vim-like.el" user-emacs-directory))
 
 ;; Org-mode configuration
 ;; WARNING: need to customize things inside the elisp file before use! See
@@ -253,7 +243,7 @@ If the new path's directories does not exist, create them."
 ;(load-file (expand-file-name "extras/email.el" user-emacs-directory))
 
 ;; Tools for academic researchers
-(load-file (expand-file-name "extras/researcher.el" user-emacs-directory))
+;; (load-file (expand-file-name "extras/researcher.el" user-emacs-directory))
 
 ;; Load keybindings
 (load-file (expand-file-name "extras/keybindings.el" user-emacs-directory))
@@ -269,10 +259,10 @@ If the new path's directories does not exist, create them."
 (load-file (concat my-emacs-home "nano/nano-defaults.el"))
 (load-file (expand-file-name "extras/customize.el" user-emacs-directory))
 
-(setq mac-option-modifier 'meta)   ;; Make Option the Meta key
-(setq mac-command-modifier 'super) ;; Optional: make Command act as Super
-
-
+(use-package exec-path-from-shell
+  :straight t
+  :config
+  (exec-path-from-shell-initialize))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;;   Built-in customization framework
@@ -284,8 +274,9 @@ If the new path's directories does not exist, create them."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-enabled-themes '(doom-dracula))
  '(custom-safe-themes
-   '("34cf3305b35e3a8132a0b1bdf2c67623bc2cb05b125f8d7d26bd51fd16d547ec" "30d174000ea9cbddecd6cc695943afb7dba66b302a14f9db5dd65074e70cc744" "d6b934330450d9de1112cbb7617eaf929244d192c4ffb1b9e6b63ad574784aad" "4ade6b630ba8cbab10703b27fd05bb43aaf8a3e5ba8c2dc1ea4a2de5f8d45882" "0f76f9e0af168197f4798aba5c5ef18e07c926f4e7676b95f2a13771355ce850" "c7a926ad0e1ca4272c90fce2e1ffa7760494083356f6bb6d72481b879afce1f2" "c1638a7061fb86be5b4347c11ccf274354c5998d52e6d8386e997b862773d1d2" "37b6695bae243145fa2dfb41440c204cd22833c25cd1993b0f258905b9e65577" "f5f80dd6588e59cfc3ce2f11568ff8296717a938edd448a947f9823a4e282b66" "014cb63097fc7dbda3edf53eb09802237961cbb4c9e9abd705f23b86511b0a69" "dccf4a8f1aaf5f24d2ab63af1aa75fd9d535c83377f8e26380162e888be0c6a9" "88f7ee5594021c60a4a6a1c275614103de8c1435d6d08cc58882f920e0cec65e" "8c7e832be864674c220f9a9361c851917a93f921fedb7717b1b5ece47690c098" "b5fd9c7429d52190235f2383e47d340d7ff769f141cd8f9e7a4629a81abc6b19" "ffafb0e9f63935183713b204c11d22225008559fa62133a69848835f4f4a758c" "9013233028d9798f901e5e8efb31841c24c12444d3b6e92580080505d56fd392" default))
+   '("dfb1c8b5bfa040b042b4ef660d0aab48ef2e89ee719a1f24a4629a0c5ed769e8" "8b148cf8154d34917dfc794b5d0fe65f21e9155977a36a5985f89c09a9669aa0" "456697e914823ee45365b843c89fbc79191fdbaff471b29aad9dcbe0ee1d5641" "8d146df8bd640320d5ca94d2913392bc6f763d5bc2bb47bed8e14975017eea91" "571661a9d205cb32dfed5566019ad54f5bb3415d2d88f7ea1d00c7c794e70a36" "8d3ef5ff6273f2a552152c7febc40eabca26bae05bd12bc85062e2dc224cde9a" "aec7b55f2a13307a55517fdf08438863d694550565dee23181d2ebd973ebd6b8" "34cf3305b35e3a8132a0b1bdf2c67623bc2cb05b125f8d7d26bd51fd16d547ec" "30d174000ea9cbddecd6cc695943afb7dba66b302a14f9db5dd65074e70cc744" "d6b934330450d9de1112cbb7617eaf929244d192c4ffb1b9e6b63ad574784aad" "4ade6b630ba8cbab10703b27fd05bb43aaf8a3e5ba8c2dc1ea4a2de5f8d45882" "0f76f9e0af168197f4798aba5c5ef18e07c926f4e7676b95f2a13771355ce850" "c7a926ad0e1ca4272c90fce2e1ffa7760494083356f6bb6d72481b879afce1f2" "c1638a7061fb86be5b4347c11ccf274354c5998d52e6d8386e997b862773d1d2" "37b6695bae243145fa2dfb41440c204cd22833c25cd1993b0f258905b9e65577" "f5f80dd6588e59cfc3ce2f11568ff8296717a938edd448a947f9823a4e282b66" "014cb63097fc7dbda3edf53eb09802237961cbb4c9e9abd705f23b86511b0a69" "dccf4a8f1aaf5f24d2ab63af1aa75fd9d535c83377f8e26380162e888be0c6a9" "88f7ee5594021c60a4a6a1c275614103de8c1435d6d08cc58882f920e0cec65e" "8c7e832be864674c220f9a9361c851917a93f921fedb7717b1b5ece47690c098" "b5fd9c7429d52190235f2383e47d340d7ff769f141cd8f9e7a4629a81abc6b19" "ffafb0e9f63935183713b204c11d22225008559fa62133a69848835f4f4a758c" "9013233028d9798f901e5e8efb31841c24c12444d3b6e92580080505d56fd392" default))
  '(package-selected-packages '(which-key)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

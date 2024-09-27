@@ -267,3 +267,10 @@
 (use-package ace-window
   :ensure t
   :bind (("M-o" . ace-window)))  ;; Bind ace-window to `M-o`
+
+(straight-use-package 'gptel)
+
+(gptel-make-ollama "Ollama"             ;Any name of your choosing
+  :host "localhost:11434"               ;Where it's running
+  :stream t                             ;Stream responses
+  :models '("llama3.2:3b"))          ;List of models

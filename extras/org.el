@@ -44,7 +44,8 @@
 (setq org-directory "~/Documents/org/") ; Non-absolute paths for agenda and
                                         ; capture templates will look here.
 
-(setq org-agenda-files '("inbox.org" "work.org"))
+(setq org-agenda-files (directory-files-recursively "~/Documents/org/" "\\.org$"))
+;; (setq org-agenda-files '("inbox.org" "work.org"))
 
 ;; Default tags
 (setq org-tag-alist '(
@@ -80,8 +81,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package org
-  :hook ((org-mode . visual-line-mode)  ; wrap lines at word breaks
-         (org-mode . flyspell-mode))    ; spell checking!
+  :hook ((org-mode . visual-line-mode))  ; wrap lines at word breaks
 
   :bind (:map global-map
               ("C-c l s" . org-store-link)          ; Mnemonic: link → store
@@ -142,121 +142,13 @@
 ;;;   Phase 3: extensions (org-roam, etc.)
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(setq org-roam-directory "~/Documents/org/org-roam/")
-(setq org-roam-index-file "~/Documents/org/org-roam/index.org")
-(use-package org-roam
-  :ensure t
-  :config
-  (org-roam-db-autosync-mode)
-  ;; Dedicated side window for backlinks
-  (add-to-list 'display-buffer-alist
-               '("\\*org-roam\\*"
-                 (display-buffer-in-side-window)
-                 (side . right)
-                 (window-width . 0.4)
-                 (window-height . fit-window-to-buffer))))
-
-;; Pretty web interface for org-roam
-(use-package org-roam-ui
-  :ensure t
-  :after org-roam
-  :config
-  (setq org-roam-ui-sync-theme t
-        org-roam-ui-follow t
-        org-roam-ui-update-on-save t
-        org-roam-ui-open-on-start t))
-
-;; Org-roam variables
-(setq org-roam-capture-templates
-      '(("d" "default" plain "%?"
-         :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                            "#+title: ${title}\n")
-         :unnarrowed t)))
-
-;; Automatic tagging
-(defun my/org-roam-capture-in-buffer ()
-  (interactive)
-  (org-roam-capture- :templates
-                     '(("d" "default" plain (function org-roam--capture-get-point)
-                        "%?"
-                        :file-name "%<%Y%m%d%H%M%S>-${slug}"
-                        :head "#+title: ${title}\nTags: "
-                        :unnarrowed t))))
-
-(define-key org-roam-mode-map (kbd "C-c n c") #'my/org-roam-capture-in-buffer)
-(global-set-key (kbd "C-c n l") 'org-roam-buffer-toggle)
-
-(setq org-roam-dailies-capture-templates
-      '(("d" "default" entry "* %?"
-         :if-new (file+head "%<%Y-%m-%d>.org"
-                            "#+title: %<%Y-%m-%d>\n"))))
-(global-set-key (kbd "C-c n f") 'org-roam-node-find)
 ;; Example: using org-bullets for prettier headers
 (use-package org-bullets
+  :straight t
   :after org
   :hook (org-mode . org-bullets-mode)
   :custom
   (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
-(global-set-key (kbd "C-c n i") 'org-roam-node-insert) 
-
-
-;; Deft shortcuts
-(use-package deft
-  :ensure t
-  :bind ("<f8>" . deft)
-  :commands (deft)
-  :config
-  (setq deft-extensions '("org" "md" "txt" "rtf"))
-  (setq deft-directory "~/Documents/org/notes")
-  (setq deft-recursive t)
-  (setq deft-use-filename-as-title t)
-  (setq deft-use-filter-string-for-filename t)
-  (setq deft-org-mode-title-prefix t)
-  (setq deft-auto-save-interval 10.0)
-  (setq deft-file-naming-rules
-        '((noslash . "-")
-          (nospace . "-")
-          (case-fn . downcase)))
-
-  ;; Change how Deft refreshes and searches: type to search, return to create
-  (setq deft-strip-summary-regexp
-        (concat "\\("
-                "[\n\t]" ;; blank
-                "\\|^#\\+[[:upper:]_]+:.*$" ;; org-mode metadata
-                "\\|^:PROPERTIES:\n\\(.+\n\\)+:END:\n"
-                "\\)"))
-  (setq deft-text-mode 'org-mode)  ; Default mode for new notes
-  (setq deft-new-file-format "%Y-%m-%d-%H-%M-%S")  ; Format for new file titles
-)
-(defun deft-new-file-named (file)
-  "Create a new file named FILE.
-If FILE already exists, open it."
-  (interactive "sNew file name: ")
-  (let ((file (concat (file-name-as-directory deft-directory)
-                      (format-time-string deft-new-file-format)
-                      " "
-                      file
-                      "."
-                      (car deft-extensions))))
-    (set-buffer (get-buffer-create "*Deft*"))
-    (deft-cache-update-file file)
-    (deft-refresh-browser)
-    (deft-open-file file)))
-
-(defun deft-open-or-create-file ()
-  "Open the file at the top of the Deft browser list or create a new one."
-  (interactive)
-  (if (not (null deft-filter-regexp))
-      (deft-open-file-other-window)
-    (deft-new-file-named deft-filter-regexp)))
-
-(eval-after-load 'deft
-  '(progn
-     (define-key deft-mode-map (kbd "<return>") 'deft-open-or-create-file)
-     (define-key deft-mode-map (kbd "C-<return>") 'deft-new-file-named)
-     (define-key deft-mode-map (kbd "C-c C-c") 'deft-filter-clear)
-     (define-key deft-mode-map (kbd "C-c C-d") 'deft-delete-file)))
 
 (use-package org-journal
   :straight t
@@ -269,3 +161,53 @@ If FILE already exists, open it."
   (org-journal-dir "~/Documents/org/journal/")
   (org-journal-date-format "%A, %d %B %Y")
   (org-journal-time-format " %I:%M %p : "))
+
+(use-package evil-org
+  :straight t
+  :after org
+  :hook (org-mode . evil-org-mode)
+  :config
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys)
+  ;; Enable Evil-style navigation in Org-mode
+  (evil-define-key 'normal org-mode-map
+    (kbd "gh") 'outline-up-heading   ;; Move up in heading
+    (kbd "gj") 'org-forward-heading-same-level ;; Down in same level heading
+    (kbd "gk") 'org-backward-heading-same-level ;; Up in same level heading
+    (kbd "gl") 'outline-next-visible-heading)) ;; Move to next heading
+
+;; Ensure M-RET and C-RET work in Insert mode and Normal mode
+(evil-define-key 'insert org-mode-map
+  (kbd "M-RET") 'org-meta-return              ;; Meta + Return: Insert heading/item
+  (kbd "C-RET") 'org-insert-heading           ;; Ctrl + Return: Insert heading
+  (kbd "C-S-RET") 'org-insert-todo-heading    ;; Ctrl + Shift + Return: Insert TODO
+)
+
+(evil-define-key 'normal org-mode-map
+  (kbd "M-RET") 'org-meta-return
+  (kbd "C-RET") 'org-insert-heading
+  (kbd "C-S-RET") 'org-insert-todo-heading)
+
+(use-package auctex
+  :straight t
+  :defer t
+  :hook (LaTeX-mode . visual-line-mode))  ;; Enable line wrapping in LaTeX
+
+;; Enable LaTeX export for Org Mode
+(setq org-latex-pdf-process '("pdflatex -interaction nonstopmode -output-directory %o %f"
+                              "bibtex %b"
+                              "pdflatex -interaction nonstopmode -output-directory %o %f"
+                              "pdflatex -interaction nonstopmode -output-directory %o %f"))
+(setq org-latex-pdf-process '("latexmk -pdf -shell-escape -bibtex -f %f"))
+
+;; Add Beamer support in Org-mode
+(require 'ox-beamer)
+
+(setq org-latex-default-class "beamer")
+(setq org-latex-classes
+      '(("beamer"
+         "\\documentclass[presentation]{beamer}"
+         ("\\section{%s}" . "\\section*{%s}")
+         ("\\subsection{%s}" . "\\subsection*{%s}")
+         ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
+(setq org-preview-latex-default-process 'dvisvgm)

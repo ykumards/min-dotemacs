@@ -4,7 +4,7 @@
 ;; Set default font family and size
 (set-face-attribute 'default nil
                     :family "JetBrainsMono Nerd Font"  ;; Replace with your preferred font
-                    :height 130          ;; Font size in 1/10 pt, 120 means 12pt
+                    :height 140          ;; Font size in 1/10 pt, 120 means 12pt
                     :weight 'light      ;; You can also use 'bold' if you want bold
                     :width 'normal)      ;; Normal width, can be 'condensed' or 'expanded'
 
@@ -13,7 +13,7 @@
   :straight t  ;; Or :ensure t if using package.el
   :config
   ;; Load the doom-Iosvkem theme
-  (load-theme 'doom-Iosvkem t)
+  (load-theme 'doom-dracula t)
 
   ;; Optional: Enable bold and italic in the theme
   (setq doom-themes-enable-bold t    ;; if nil, bold is disabled across all themes
@@ -53,23 +53,7 @@
 (use-package markdown-mode
   :straight t
   :mode ("\\.md\\'" . markdown-mode)
-  :init (setq markdown-command "multimarkdown")
+  :init
+  (setq markdown-command "pandoc")  ;; or multimarkdown if installed
   :config
-  (setq markdown-fontify-code-blocks-natively t)
-  (setq markdown-enable-wiki-links t))
-
-;; Optional: Add table of contents functionality
-(use-package markdown-toc
-  :straight t
-  :hook (markdown-mode . markdown-toc-mode))
-
-;; Syntax checking for markdown
-(use-package flycheck
-  :straight t
-  :hook (markdown-mode . flycheck-mode))
-
-;; Enable orgtbl-mode for better tables
-(add-hook 'markdown-mode-hook 'orgtbl-mode)
-
-;; Enable visual-line-mode for better line wrapping
-(add-hook 'markdown-mode-hook 'visual-line-mode)
+  (setq markdown-enable-math t))  ;; Enable math support
