@@ -69,7 +69,7 @@
 
 ;; Org-refile: where should org-refile look?
 (setq org-refile-targets "~/Documents/org/")
-
+(add-hook 'org-mode-hook 'org-toggle-pretty-entities)
 ;;; Phase 3 variables
 
 ;;; Optional variables

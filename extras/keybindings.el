@@ -1,8 +1,9 @@
-;; Global keybinding for Neotree toggle
+;; Global keybinding for Treemacs toggle
 (global-set-key [f8] 'treemacs)
 
 (global-set-key "\C-x\C-m" 'execute-extended-command)
-(global-set-key (kbd "C-c C-n") 'dired-sidebar-toggle-sidebar)
+;; (global-set-key (kbd "C-c C-n") 'dired-sidebar-toggle-sidebar)
+(global-set-key (kbd "C-c C-n") 'treemacs)
 (global-set-key (kbd "C-x RET") 'execute-extended-command)
 
 
@@ -16,6 +17,18 @@
   (kbd "C-<right>") 'move-end-of-line)                 ;; Cmd + Right: Move to end of line
 
 (global-set-key (kbd "C-a") 'mark-whole-buffer)         ;; Cmd + A: Select all
+
+(global-set-key (kbd "C-c <left>") 'windmove-left)   ;; Move to the left window
+(global-set-key (kbd "C-c <right>") 'windmove-right) ;; Move to the right window
+(global-set-key (kbd "C-c <up>") 'windmove-up)       ;; Move to the window above
+(global-set-key (kbd "C-c <down>") 'windmove-down)   ;; Move to the window below
+
+(with-eval-after-load 'which-key
+  (which-key-add-key-based-replacements
+    "C-c <left>" "Move left"
+    "C-c <right>" "Move right"
+    "C-c <up>" "Move up"
+    "C-c <down>" "Move down"))
 
 ;; Move line up/down
 (defun move-line-up ()
