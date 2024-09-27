@@ -4,6 +4,20 @@
 (global-set-key "\C-x\C-m" 'execute-extended-command)
 (global-set-key (kbd "C-c C-n") 'dired-sidebar-toggle-sidebar)
 (global-set-key (kbd "C-x RET") 'execute-extended-command)
+
+
+;; MacOS editing behavior
+(evil-define-key 'insert 'global
+  (kbd "C-<backspace>") 'evil-delete-backward-line      ;; Cmd + Delete: Delete to start of line
+  (kbd "C-S-<backspace>") 'kill-line                    ;; Cmd + Shift + Delete: Delete to end of line
+  (kbd "M-<backspace>") 'backward-kill-word             ;; Option + Delete: Kill word backward
+  (kbd "C-<backspace>") 'kill-whole-line                ;; Cmd + Backspace: Kill entire line
+  (kbd "C-<left>") 'move-beginning-of-line              ;; Cmd + Left: Move to start of line
+  (kbd "C-<right>") 'move-end-of-line)                 ;; Cmd + Right: Move to end of line
+
+(global-set-key (kbd "C-a") 'mark-whole-buffer)         ;; Cmd + A: Select all
+
+;; Move line up/down
 (defun move-line-up ()
   "Move the current line up."
   (interactive)
@@ -129,7 +143,7 @@
    "jw" '(avy-goto-word-1 :which-key "Go to word")
    "jl" '(avy-goto-line :which-key "Go to line")
    "js" '(avy-goto-char-timer :which-key "Go to char sequence")
-   
+
     ;; journal
     "l" '(:ignore t :which-key "journal")
     "lc" '(calendar :which-key "Open calendar")
