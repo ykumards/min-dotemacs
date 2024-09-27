@@ -123,6 +123,8 @@
           ;; Capture and keep an org-link to the thing we're currently working with
           ("r" "Capture with Reference" entry (file "inbox.org")
            "* TODO %?\n%U\n%i\n%a")
+          ("i" "Idea" entry (file+headline "ideas.org" "New Ideas")
+            "* %?\nEntered on %U")
           ;; Define a section
           ("w" "Work")
           ("wm" "Work meeting" entry (file+headline "work.org" "Meetings")
@@ -137,6 +139,24 @@
             ("w" "Work" agenda ""
              ((org-agenda-files '("work.org")))))))
 
+(custom-set-faces
+ '(org-level-1 ((t (:inherit outline-1 :height 1.4))))
+ '(org-level-2 ((t (:inherit outline-2 :height 1.2))))
+ '(org-level-3 ((t (:inherit outline-3 :height 1.1))))
+ '(org-level-4 ((t (:inherit outline-4 :height 1.0))))
+ '(org-level-5 ((t (:inherit outline-5 :height 1.0)))))
+
+;; Ensure M-RET and C-RET work in Insert mode and Normal mode
+(evil-define-key 'insert org-mode-map
+  (kbd "M-RET") 'org-meta-return              ;; Meta + Return: Insert heading/item
+  (kbd "C-RET") 'org-insert-heading           ;; Ctrl + Return: Insert heading
+  (kbd "C-S-RET") 'org-insert-todo-heading    ;; Ctrl + Shift + Return: Insert TODO
+)
+
+(evil-define-key 'normal org-mode-map
+  (kbd "M-RET") 'org-meta-return
+  (kbd "C-RET") 'org-insert-heading
+  (kbd "C-S-RET") 'org-insert-todo-heading)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;;   Phase 3: extensions (org-roam, etc.)
@@ -148,7 +168,7 @@
   :after org
   :hook (org-mode . org-bullets-mode)
   :custom
-  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+  (setq org-bullets-bullet-list '("▶" "◉" "✿" "◆" "●" "✸" "•")))
 
 (use-package org-journal
   :straight t
@@ -176,18 +196,6 @@
     (kbd "gk") 'org-backward-heading-same-level ;; Up in same level heading
     (kbd "gl") 'outline-next-visible-heading)) ;; Move to next heading
 
-;; Ensure M-RET and C-RET work in Insert mode and Normal mode
-(evil-define-key 'insert org-mode-map
-  (kbd "M-RET") 'org-meta-return              ;; Meta + Return: Insert heading/item
-  (kbd "C-RET") 'org-insert-heading           ;; Ctrl + Return: Insert heading
-  (kbd "C-S-RET") 'org-insert-todo-heading    ;; Ctrl + Shift + Return: Insert TODO
-)
-
-(evil-define-key 'normal org-mode-map
-  (kbd "M-RET") 'org-meta-return
-  (kbd "C-RET") 'org-insert-heading
-  (kbd "C-S-RET") 'org-insert-todo-heading)
-
 (use-package auctex
   :straight t
   :defer t
@@ -211,3 +219,28 @@
          ("\\subsection{%s}" . "\\subsection*{%s}")
          ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
 (setq org-preview-latex-default-process 'dvisvgm)
+
+;;;;; Org roam
+(use-package org-roam
+  :straight t
+  :init
+  (setq org-roam-v2-ack t) ;; Skip the migration prompt if upgrading
+  :custom
+  (org-roam-directory "~/Documents/org/org-roam/")  ;; Directory where roam files are stored
+  (org-roam-completion-everywhere t)               ;; Enable completion everywhere
+  :config
+  (org-roam-db-autosync-mode)   ;; Automatically sync the roam database
+  (global-set-key (kbd "C-c n j") 'org-roam-dailies-capture-today)
+  )
+
+(use-package org-roam-ui
+  :straight t
+  :after org-roam
+  ;; :hook (after-init . org-roam-ui-mode)
+  :custom
+  (org-roam-ui-sync-theme t)    ;; Sync the theme with Emacs
+  (org-roam-ui-follow t)        ;; Follow the current buffer
+  (org-roam-ui-update-on-save t) ;; Auto-refresh the graph on save
+  ;; (org-roam-ui-open-on-start t) ;; Auto-open the web interface
+  )
+  (global-set-key (kbd "C-c n u") 'org-roam-ui-mode)  ;; Bind C-c n u to toggle org-roam-ui-mode

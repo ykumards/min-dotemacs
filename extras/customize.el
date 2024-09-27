@@ -57,3 +57,25 @@
   (setq markdown-command "pandoc")  ;; or multimarkdown if installed
   :config
   (setq markdown-enable-math t))  ;; Enable math support
+
+;; Org Calendar settings
+(evil-set-initial-state 'calendar-mode 'normal)
+
+(with-eval-after-load 'calendar
+  (evil-define-key 'normal calendar-mode-map
+    "j" 'calendar-forward-week              ;; Move forward by one week
+    "k" 'calendar-backward-week             ;; Move backward by one week
+    "h" 'calendar-backward-day              ;; Move back one day
+    "l" 'calendar-forward-day               ;; Move forward one day
+    "H" 'calendar-beginning-of-week         ;; Move to the beginning of the week
+    "L" 'calendar-end-of-week               ;; Move to the end of the week
+    "M" 'calendar-beginning-of-month        ;; Move to the beginning of the month
+    "y" 'calendar-cursor-to-nearest-date    ;; Jump to the nearest date
+    "n" 'calendar-forward-month             ;; Move forward by one month
+    "p" 'calendar-backward-month            ;; Move backward by one month
+    "f" 'calendar-forward-year              ;; Move forward by one year
+    "b" 'calendar-backward-year             ;; Move backward by one year
+    "q" 'calendar-exit                      ;; Exit the calendar
+    ))
+
+
